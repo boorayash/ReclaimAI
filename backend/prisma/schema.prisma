@@ -1,0 +1,205 @@
+// Revenue Recovery Agent — Prisma schema
+// Shared core: Case, RecoveryAction, AuditEvent, Promise, Payment
+// Domain-specific: Invoice (B2B), PaymentAttempt (consumer payment failure)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum CaseType {
+  PAYMENT_FAILURE
+  B2B_RECEIVABLE
+}
+
+enum CaseStatus {
+  DETECTED // just created, not yet diagnosed
+  DIAGNOSING // AI is reasoning about it
+  PENDING_APPROVAL // high-risk, waiting on human approval
+  ACTION_TAKEN // an action was executed, waiting to see outcome
+  RECOVERED // money came in, fully resolved
+  PARTIALLY_RECOVERED // some money came in, case still open
+  ESCALATED // handed to a human / stopped by policy
+  UNRESOLVED // exhausted retries / no response, closed as a loss
+}
+
+enum RiskLevel {
+  LOW
+  HIGH
+}
+
+enum ActionType {
+  RETRY_PAYMENT
+  SEND_REMINDER
+  SEND_ESCALATION
+  REQUEST_COMMITMENT
+  VERIFY_PAYMENT
+  ESCALATE_TO_HUMAN
+  NO_ACTION_AI_UNAVAILABLE
+}
+
+enum ActionStatus {
+  PENDING
+  EXECUTED
+  FAILED
+  SKIPPED
+}
+
+enum ResponseType {
+  PROMISE_TO_PAY
+  DISPUTE
+  PARTIAL_PAYMENT
+  ALREADY_PAID
+  NO_RESPONSE
+}
+
+enum Role {
+  ADMIN
+  REVIEWER
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(REVIEWER)
+  createdAt    DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────
+// SHARED CORE
+// ─────────────────────────────────────────────
+
+model Case {
+  id         String     @id @default(uuid())
+  type       CaseType
+  status     CaseStatus @default(DETECTED)
+  riskLevel  RiskLevel  @default(LOW)
+
+  // simulation clock — the "day" in our fake timeline this case currently sits at
+  simDay     Int        @default(0)
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  // relations
+  invoice         Invoice?
+  paymentAttempt  PaymentAttempt?
+  recoveryActions RecoveryAction[]
+  auditEvents     AuditEvent[]
+  promises        Promise[]
+  payments        Payment[]
+  clientResponses ClientResponse[]
+
+  @@index([type, status])
+}
+
+model RecoveryAction {
+  id            String       @id @default(uuid())
+  caseId        String
+  case          Case         @relation(fields: [caseId], references: [id])
+
+  actionType    ActionType
+  status        ActionStatus @default(PENDING)
+  attemptNumber Int          @default(1)
+
+  // AI vs deterministic — lets the dashboard show "who decided this"
+  decidedBy     String       @default("AI") // "AI" | "POLICY_ENGINE" | "FALLBACK"
+  reasoning     String?      // AI's stated reasoning, stored for the audit trail
+
+  executedAt    DateTime?
+  createdAt     DateTime     @default(now())
+
+  @@index([caseId])
+}
+
+model AuditEvent {
+  id        String   @id @default(uuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id])
+
+  eventType String   // e.g. "CASE_DETECTED", "AI_UNAVAILABLE", "RETRY_BLOCKED_IDEMPOTENT"
+  payload   Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([caseId])
+}
+
+model Promise {
+  id              String   @id @default(uuid())
+  caseId          String
+  case            Case     @relation(fields: [caseId], references: [id])
+
+  promisedAmount  Decimal  @db.Decimal(12, 2)
+  promisedBySimDay Int     // simDay by which payment was promised
+  fulfilled       Boolean  @default(false)
+
+  createdAt       DateTime @default(now())
+
+  @@index([caseId])
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id])
+
+  amount    Decimal  @db.Decimal(12, 2)
+  simDay    Int
+
+  createdAt DateTime @default(now())
+
+  @@index([caseId])
+}
+
+// scripted client responses for the B2B branching workflow
+model ClientResponse {
+  id           String       @id @default(uuid())
+  caseId       String
+  case         Case         @relation(fields: [caseId], references: [id])
+
+  responseType ResponseType
+  simDay       Int
+  payload      Json?        // e.g. { "partialAmount": 50000 }
+
+  createdAt    DateTime     @default(now())
+
+  @@index([caseId])
+}
+
+// ─────────────────────────────────────────────
+// DOMAIN-SPECIFIC
+// ─────────────────────────────────────────────
+
+model Invoice {
+  id            String   @id @default(uuid())
+  caseId        String   @unique
+  case          Case     @relation(fields: [caseId], references: [id])
+
+  customerName  String
+  invoiceAmount Decimal  @db.Decimal(12, 2)
+  dueSimDay     Int      // day (on sim clock) the invoice was due
+  createdAt     DateTime @default(now())
+}
+
+model PaymentAttempt {
+  id              String   @id @default(uuid())
+  caseId          String   @unique
+  case            Case     @relation(fields: [caseId], references: [id])
+
+  originalAmount  Decimal  @db.Decimal(12, 2)
+  failureReason   String   // e.g. "INSUFFICIENT_FUNDS", "CARD_DECLINED", "GATEWAY_TIMEOUT"
+  retryCount      Int      @default(0)
+  maxRetries      Int      @default(3)
+
+  createdAt       DateTime @default(now())
+}
