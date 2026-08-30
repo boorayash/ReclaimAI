@@ -75,7 +75,7 @@ export class RecoveryEngineService {
     }
   }
 
-  private async diagnoseAndDecide(caseId: string) {
+  private async diagnoseAndDecide(caseId: string, opts?: { approved?: boolean }) {
     await this.prisma.case.update({
       where: { id: caseId },
       data: { status: 'DIAGNOSING' },
@@ -116,17 +116,28 @@ export class RecoveryEngineService {
     const attemptNumber = (kase.paymentAttempt?.retryCount ?? 0) + 1;
     const maxRetries = kase.paymentAttempt?.maxRetries ?? 3;
 
+    const hasDispute =
+      (await this.prisma.clientResponse.count({
+        where: { caseId, responseType: 'DISPUTE' },
+      })) > 0;
+
     const decision = this.policyEngine.evaluate({
       diagnosis,
       amount,
       attemptNumber,
       maxRetries,
-      hasDispute: false, // set true once a DISPUTE ClientResponse is wired in
+      hasDispute,
     });
 
     await this.logEvent(caseId, 'POLICY_DECISION', decision as any);
 
     if (decision.requiresApproval) {
+      if (opts?.approved) {
+        // Human approved this case explicitly — execute despite the gate
+        // (dispute, or high-value over the approval threshold). Prevents
+        // approveCase() from looping back into PENDING_APPROVAL.
+        return this.executeAction(caseId, diagnosis);
+      }
       await this.prisma.case.update({
         where: { id: caseId },
         data: { status: 'PENDING_APPROVAL', riskLevel: 'HIGH' },
@@ -228,10 +239,12 @@ export class RecoveryEngineService {
 
     await this.logEvent(caseId, 'APPROVED_BY_ADMIN', { approvedByUserId });
 
-    // Re-run diagnosis so we execute with a fresh decision, now under
-    // an approved context. In a fuller version we'd re-use the stored
-    // diagnosis rather than re-calling the AI — left as a next step.
-    return this.diagnoseAndDecide(caseId);
+    // Re-run diagnosis so we execute with a fresh decision, but under an
+    // approved context — opts.approved makes diagnoseAndDecide execute the
+    // recommendation despite the requiresApproval gate. In a fuller version
+    // we'd re-use the stored diagnosis rather than re-calling the AI — left
+    // as a next step.
+    return this.diagnoseAndDecide(caseId, { approved: true });
   }
 
     /**
@@ -255,9 +268,9 @@ export class RecoveryEngineService {
       case 'DISPUTE':
         await this.prisma.case.update({
           where: { id: caseId },
-          data: { status: 'ESCALATED', riskLevel: 'HIGH' },
+          data: { status: 'PENDING_APPROVAL', riskLevel: 'HIGH' },
         });
-        await this.logEvent(caseId, 'ESCALATED_DISPUTE');
+        await this.logEvent(caseId, 'DISPUTE_FLAGGED_FOR_REVIEW');
         break;
 
       case 'PROMISE_TO_PAY': {
@@ -340,7 +353,42 @@ export class RecoveryEngineService {
       }
     }
 
-    return { fromDay, toDay, resolvedCount: duePromises.length };
+    // NO_RESPONSE sweep: a B2B case whose client never replied and whose
+    // invoice is now past due gets escalated to human review — silence is
+    // itself a signal. Only matches status ACTION_TAKEN and zero
+    // ClientResponses, so once escalated (terminal) it never re-fires, and
+    // any case that did respond (promise/dispute/partial/already-paid) is
+    // excluded. PENDING_APPROVAL cases are deliberately skipped: they're
+    // already handed to a human via the approval gate, so a second
+    // escalation would be redundant.
+    const silentCases = await this.prisma.case.findMany({
+      where: {
+        type: 'B2B_RECEIVABLE',
+        status: 'ACTION_TAKEN',
+        invoice: { dueSimDay: { lte: toDay } },
+        clientResponses: { none: {} },
+      },
+      include: { invoice: true },
+    });
+
+    for (const kase of silentCases) {
+      await this.logEvent(kase.id, 'NO_RESPONSE_ESCALATED', {
+        dueSimDay: kase.invoice?.dueSimDay,
+        currentSimDay: toDay,
+        reason: 'No client response by invoice due day — escalated to human review.',
+      });
+      await this.prisma.case.update({
+        where: { id: kase.id },
+        data: { status: 'ESCALATED', riskLevel: 'HIGH' },
+      });
+    }
+
+    return {
+      fromDay,
+      toDay,
+      resolvedCount: duePromises.length,
+      noResponseEscalated: silentCases.length,
+    };
   }
 
   private async getExpectedAmount(caseId: string): Promise<number> {
