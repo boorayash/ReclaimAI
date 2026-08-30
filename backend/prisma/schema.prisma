@@ -200,6 +200,7 @@ model PaymentAttempt {
   failureReason   String   // e.g. "INSUFFICIENT_FUNDS", "CARD_DECLINED", "GATEWAY_TIMEOUT"
   retryCount      Int      @default(0)
   maxRetries      Int      @default(3)
+  succeedsOnRetryAt Int?  // null = never recovers; e.g. 2 = recovers on 2nd retry
 
   createdAt       DateTime @default(now())
 }

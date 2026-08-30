@@ -13,6 +13,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { PrismaService } from '../prisma/prisma.service';
 import { RecoveryEngineService } from './recovery-engine.service';
 import { CreateCaseDto } from './dto/create-case.dto';
+import { RespondDto } from './dto/respond.dto';
 
 @Controller('cases')
 @UseGuards(JwtAuthGuard) // every endpoint here requires a logged-in user
@@ -69,6 +70,7 @@ export class CasesController {
                 create: {
                   originalAmount: dto.originalAmount!,
                   failureReason: dto.failureReason!,
+                  succeedsOnRetryAt: dto.succeedsOnRetryAt,
                 },
               },
             }),
@@ -95,4 +97,15 @@ export class CasesController {
   async approve(@Param('id') id: string, @CurrentUser() user: any) {
     return this.recoveryEngine.approveCase(id, user.userId);
   }
+
+    @Post(':id/respond')
+  async respond(@Param('id') id: string, @Body() dto: RespondDto) {
+    return this.recoveryEngine.handleClientResponse(id, dto.responseType, dto);
+  }
+
+  @Post('sim/advance-and-resolve')
+  async advanceAndResolve(@Body('days') days: number) {
+    return this.recoveryEngine.advanceClockAndResolve(days ?? 1);
+  }
+
 }

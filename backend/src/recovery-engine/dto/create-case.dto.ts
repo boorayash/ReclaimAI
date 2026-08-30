@@ -25,4 +25,9 @@ export class CreateCaseDto {
   @IsOptional()
   @IsString()
   failureReason?: string;
+
+  // PAYMENT_FAILURE: which retry (1-based) recovers. null/omitted = never recovers.
+  @IsOptional()
+  @IsNumber()
+  succeedsOnRetryAt?: number;
 }

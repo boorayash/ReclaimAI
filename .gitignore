@@ -1,4 +1,6 @@
 helpers/
+.postman/
+postman/
 backend/node_modules
 backend/.env
 backend/dist
@@ -8,3 +10,13 @@ backend/dist
 
 frontend/node_modules
 frontend/dist
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+.claude/
+.gemini/
+AGENTS.md 
+GEMINI.md
+CLAUDE.md
+.ignore
+.mcp.json
