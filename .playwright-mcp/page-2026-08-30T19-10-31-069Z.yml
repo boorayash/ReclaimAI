@@ -1,0 +1,386 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: graft
+      - generic [ref=e5]: RevenueRecovery
+    - generic [ref=e6]: 114 nodes · 221 links
+    - tablist [ref=e7]:
+      - tab "Context" [ref=e8] [cursor=pointer]
+      - tab "Code" [active] [selected] [ref=e9] [cursor=pointer]
+      - tab "Outline" [ref=e10] [cursor=pointer]
+    - searchbox "Search nodes" [ref=e15]
+    - button "Toggle theme" [ref=e16] [cursor=pointer]
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - img "Force-directed graph" [ref=e21]:
+        - generic [ref=e22]:
+          - generic "calls" [ref=e41]
+          - generic "contains" [ref=e42]
+          - generic "contains" [ref=e43]
+          - generic "imports" [ref=e44]
+          - generic "imports" [ref=e45]
+          - generic "imports" [ref=e46]
+          - generic "imports" [ref=e47]
+          - generic "imports" [ref=e48]
+          - generic "references" [ref=e49]
+          - generic "references" [ref=e50]
+          - generic "references" [ref=e51]
+          - generic "references" [ref=e52]
+          - generic "references" [ref=e53]
+          - generic "contains" [ref=e54]
+          - generic "imports" [ref=e55]
+          - generic "imports" [ref=e56]
+          - generic "contains" [ref=e57]
+          - generic "contains" [ref=e58]
+          - generic "calls" [ref=e59]
+          - generic "contains" [ref=e60]
+          - generic "imports" [ref=e61]
+          - generic "imports" [ref=e62]
+          - generic "imports" [ref=e63]
+          - generic "references" [ref=e64]
+          - generic "references" [ref=e65]
+          - generic "references" [ref=e66]
+          - generic "contains" [ref=e67]
+          - generic "imports" [ref=e68]
+          - generic "contains" [ref=e69]
+          - generic "contains" [ref=e70]
+          - generic "contains" [ref=e71]
+          - generic "contains" [ref=e72]
+          - generic "calls" [ref=e73]
+          - generic "contains" [ref=e74]
+          - generic "contains" [ref=e75]
+          - generic "contains" [ref=e76]
+          - generic "contains" [ref=e77]
+          - generic "imports" [ref=e78]
+          - generic "contains" [ref=e79]
+          - generic "contains" [ref=e80]
+          - generic "contains" [ref=e81]
+          - generic "contains" [ref=e82]
+          - generic "contains" [ref=e83]
+          - generic "contains" [ref=e84]
+          - generic "imports" [ref=e85]
+          - generic "imports" [ref=e86]
+          - generic "imports" [ref=e87]
+          - generic "imports" [ref=e88]
+          - generic "imports" [ref=e89]
+          - generic "imports" [ref=e90]
+          - generic "references" [ref=e91]
+          - generic "references" [ref=e92]
+          - generic "calls" [ref=e93]
+          - generic "contains" [ref=e94]
+          - generic "contains" [ref=e95]
+          - generic "calls" [ref=e96]
+          - generic "contains" [ref=e97]
+          - generic "imports" [ref=e98]
+          - generic "imports" [ref=e99]
+          - generic "imports" [ref=e100]
+          - generic "imports" [ref=e101]
+          - generic "imports" [ref=e102]
+          - generic "references" [ref=e103]
+          - generic "references" [ref=e104]
+          - generic "references" [ref=e105]
+          - generic "references" [ref=e106]
+          - generic "references" [ref=e107]
+          - generic "contains" [ref=e108]
+          - generic "contains" [ref=e109]
+          - generic "imports" [ref=e110]
+          - generic "imports" [ref=e111]
+          - generic "imports" [ref=e112]
+          - generic "contains" [ref=e113]
+          - generic "contains" [ref=e114]
+          - generic "contains" [ref=e115]
+          - generic "contains" [ref=e116]
+          - generic "contains" [ref=e117]
+          - generic "contains" [ref=e118]
+          - generic "contains" [ref=e119]
+          - generic "calls" [ref=e120]
+          - generic "calls" [ref=e121]
+          - generic "calls" [ref=e122]
+          - generic "calls" [ref=e123]
+          - generic "calls" [ref=e124]
+          - generic "calls" [ref=e125]
+          - generic "calls" [ref=e126]
+          - generic "calls" [ref=e127]
+          - generic "calls" [ref=e128]
+          - generic "calls" [ref=e129]
+          - generic "calls" [ref=e130]
+          - generic "calls" [ref=e131]
+          - generic "contains" [ref=e132]
+          - generic "calls" [ref=e133]
+          - generic "contains" [ref=e134]
+          - generic "imports" [ref=e135]
+          - generic "references" [ref=e136]
+          - generic "contains" [ref=e137]
+          - generic "imports" [ref=e138]
+          - generic "references" [ref=e139]
+          - generic "contains" [ref=e140]
+          - generic "contains" [ref=e141]
+          - generic "contains" [ref=e142]
+          - generic "contains" [ref=e143]
+          - generic "imports" [ref=e144]
+          - generic "contains" [ref=e145]
+          - generic "contains" [ref=e146]
+          - generic "contains" [ref=e147]
+          - generic "contains" [ref=e148]
+          - generic "calls" [ref=e149]
+          - generic "calls" [ref=e150]
+          - generic "calls" [ref=e151]
+          - generic "contains" [ref=e152]
+          - generic "imports" [ref=e153]
+          - generic "imports" [ref=e154]
+          - generic "imports" [ref=e155]
+          - generic "imports" [ref=e156]
+          - generic "imports" [ref=e157]
+          - generic "imports" [ref=e158]
+          - generic "imports" [ref=e159]
+          - generic "imports" [ref=e160]
+          - generic "references" [ref=e161]
+          - generic "calls" [ref=e162]
+          - generic "contains" [ref=e163]
+          - generic "contains" [ref=e164]
+          - generic "contains" [ref=e165]
+          - generic "contains" [ref=e166]
+          - generic "contains" [ref=e167]
+          - generic "contains" [ref=e168]
+          - generic "contains" [ref=e169]
+          - generic "contains" [ref=e170]
+          - generic "contains" [ref=e171]
+          - generic "references" [ref=e172]
+          - generic "calls" [ref=e173]
+          - generic "calls" [ref=e174]
+          - generic "calls" [ref=e175]
+          - generic "calls" [ref=e176]
+          - generic "contains" [ref=e177]
+          - generic "calls" [ref=e178]
+          - generic "calls" [ref=e179]
+          - generic "contains" [ref=e180]
+          - generic "contains" [ref=e181]
+          - generic "contains" [ref=e182]
+          - generic "imports" [ref=e183]
+          - generic "contains" [ref=e184]
+          - generic "contains" [ref=e185]
+          - generic "imports" [ref=e186]
+          - generic "imports" [ref=e187]
+          - generic "imports" [ref=e188]
+          - generic "imports" [ref=e189]
+          - generic "imports" [ref=e190]
+          - generic "references" [ref=e191]
+          - generic "references" [ref=e192]
+          - generic "references" [ref=e193]
+          - generic "references" [ref=e194]
+          - generic "references" [ref=e195]
+          - generic "contains" [ref=e196]
+          - generic "imports" [ref=e197]
+          - generic "imports" [ref=e198]
+          - generic "imports" [ref=e199]
+          - generic "imports" [ref=e200]
+          - generic "contains" [ref=e201]
+          - generic "contains" [ref=e202]
+          - generic "contains" [ref=e203]
+          - generic "contains" [ref=e204]
+          - generic "contains" [ref=e205]
+          - generic "contains" [ref=e206]
+          - generic "contains" [ref=e207]
+          - generic "contains" [ref=e208]
+          - generic "contains" [ref=e209]
+          - generic "contains" [ref=e210]
+          - generic "contains" [ref=e211]
+          - generic "contains" [ref=e212]
+          - generic "calls" [ref=e213]
+          - generic "calls" [ref=e214]
+          - generic "calls" [ref=e215]
+          - generic "calls" [ref=e216]
+          - generic "calls" [ref=e217]
+          - generic "calls" [ref=e218]
+          - generic "calls" [ref=e219]
+          - generic "calls" [ref=e220]
+          - generic "calls" [ref=e221]
+          - generic "calls" [ref=e222]
+          - generic "calls" [ref=e223]
+          - generic "calls" [ref=e224]
+          - generic "calls" [ref=e225]
+          - generic "calls" [ref=e226]
+          - generic "calls" [ref=e227]
+          - generic "calls" [ref=e228]
+          - generic "calls" [ref=e229]
+          - generic "calls" [ref=e230]
+          - generic "calls" [ref=e231]
+          - generic "calls" [ref=e232]
+          - generic "calls" [ref=e233]
+          - generic "calls" [ref=e234]
+          - generic "calls" [ref=e235]
+          - generic "calls" [ref=e236]
+          - generic "calls" [ref=e237]
+          - generic "calls" [ref=e238]
+          - generic "calls" [ref=e239]
+          - generic "contains" [ref=e240]
+          - generic "contains" [ref=e241]
+          - generic "contains" [ref=e242]
+          - generic "imports" [ref=e243]
+          - generic "imports" [ref=e244]
+          - generic "references" [ref=e245]
+          - generic "contains" [ref=e246]
+          - generic "contains" [ref=e247]
+          - generic "contains" [ref=e248]
+          - generic "calls" [ref=e249]
+          - generic "calls" [ref=e250]
+          - generic "contains" [ref=e251]
+          - generic "imports" [ref=e252]
+          - generic "imports" [ref=e253]
+          - generic "references" [ref=e254]
+          - generic "references" [ref=e255]
+          - generic "contains" [ref=e256]
+          - generic "imports" [ref=e257]
+          - generic "contains" [ref=e258]
+          - generic "contains" [ref=e259]
+          - generic "contains" [ref=e260]
+          - generic "contains" [ref=e261]
+          - generic [ref=e262] [cursor=pointer]: seed.ts
+          - generic [ref=e266] [cursor=pointer]: main
+          - generic [ref=e270] [cursor=pointer]: app.module.ts
+          - generic [ref=e274] [cursor=pointer]: AppModule
+          - generic [ref=e278] [cursor=pointer]: auth.controller.ts
+          - generic [ref=e282] [cursor=pointer]: AuthController
+          - generic [ref=e286] [cursor=pointer]: constructor
+          - generic [ref=e290] [cursor=pointer]: login
+          - generic [ref=e294] [cursor=pointer]: auth.module.ts
+          - generic [ref=e298] [cursor=pointer]: AuthModule
+          - generic [ref=e302] [cursor=pointer]: auth.service.ts
+          - generic [ref=e306] [cursor=pointer]: AuthService
+          - generic [ref=e310] [cursor=pointer]: constructor
+          - generic [ref=e314] [cursor=pointer]: createUser
+          - generic [ref=e318] [cursor=pointer]: login
+          - generic [ref=e322] [cursor=pointer]: validateUser
+          - generic [ref=e326] [cursor=pointer]: current-user.decorator.ts
+          - generic [ref=e330] [cursor=pointer]: roles.decorator.ts
+          - generic [ref=e334] [cursor=pointer]: Roles
+          - generic [ref=e338] [cursor=pointer]: login.dto.ts
+          - generic [ref=e342] [cursor=pointer]: LoginDto
+          - generic [ref=e346] [cursor=pointer]: jwt-auth.guard.ts
+          - generic [ref=e350] [cursor=pointer]: JwtAuthGuard
+          - generic [ref=e354] [cursor=pointer]: roles.guard.ts
+          - generic [ref=e358] [cursor=pointer]: RolesGuard
+          - generic [ref=e362] [cursor=pointer]: canActivate
+          - generic [ref=e366] [cursor=pointer]: constructor
+          - generic [ref=e370] [cursor=pointer]: jwt.strategy.ts
+          - generic [ref=e374] [cursor=pointer]: JwtStrategy
+          - generic [ref=e378] [cursor=pointer]: constructor
+          - generic [ref=e382] [cursor=pointer]: validate
+          - generic [ref=e386] [cursor=pointer]: batch.controller.ts
+          - generic [ref=e390] [cursor=pointer]: BatchController
+          - generic [ref=e394] [cursor=pointer]: constructor
+          - generic [ref=e398] [cursor=pointer]: run
+          - generic [ref=e402] [cursor=pointer]: batch.module.ts
+          - generic [ref=e406] [cursor=pointer]: BatchModule
+          - generic [ref=e410] [cursor=pointer]: batch.service.ts
+          - generic [ref=e414] [cursor=pointer]: BatchService
+          - generic [ref=e418] [cursor=pointer]: constructor
+          - generic [ref=e422] [cursor=pointer]: createB2b
+          - generic [ref=e426] [cursor=pointer]: createPaymentFailure
+          - generic [ref=e430] [cursor=pointer]: createTemplate
+          - generic [ref=e434] [cursor=pointer]: run
+          - generic [ref=e438] [cursor=pointer]: summarize
+          - generic [ref=e442] [cursor=pointer]: throttle
+          - generic [ref=e446] [cursor=pointer]: TemplateName
+          - generic [ref=e450] [cursor=pointer]: run-batch.dto.ts
+          - generic [ref=e454] [cursor=pointer]: RunBatchDto
+          - generic [ref=e458] [cursor=pointer]: main.ts
+          - generic [ref=e462] [cursor=pointer]: bootstrap
+          - generic [ref=e466] [cursor=pointer]: prisma.module.ts
+          - generic [ref=e470] [cursor=pointer]: PrismaModule
+          - generic [ref=e474] [cursor=pointer]: prisma.service.ts
+          - generic [ref=e478] [cursor=pointer]: PrismaService
+          - generic [ref=e482] [cursor=pointer]: onModuleDestroy
+          - generic [ref=e486] [cursor=pointer]: onModuleInit
+          - generic [ref=e490] [cursor=pointer]: ai-diagnosis.service.ts
+          - generic [ref=e494] [cursor=pointer]: AiDiagnosisService
+          - generic [ref=e498] [cursor=pointer]: buildPrompt
+          - generic [ref=e502] [cursor=pointer]: diagnose
+          - generic [ref=e506] [cursor=pointer]: fallbackDiagnosis
+          - generic [ref=e510] [cursor=pointer]: parseAndValidate
+          - generic [ref=e514] [cursor=pointer]: cases.controller.ts
+          - generic [ref=e518] [cursor=pointer]: CasesController
+          - generic [ref=e522] [cursor=pointer]: advanceAndResolve
+          - generic [ref=e526] [cursor=pointer]: approve
+          - generic [ref=e530] [cursor=pointer]: constructor
+          - generic [ref=e534] [cursor=pointer]: create
+          - generic [ref=e538] [cursor=pointer]: getOne
+          - generic [ref=e542] [cursor=pointer]: list
+          - generic [ref=e546] [cursor=pointer]: metrics
+          - generic [ref=e550] [cursor=pointer]: count
+          - generic [ref=e554] [cursor=pointer]: process
+          - generic [ref=e558] [cursor=pointer]: respond
+          - generic [ref=e562] [cursor=pointer]: create-case.dto.ts
+          - generic [ref=e566] [cursor=pointer]: CreateCaseDto
+          - generic [ref=e570] [cursor=pointer]: respond.dto.ts
+          - generic [ref=e574] [cursor=pointer]: RespondDto
+          - generic [ref=e578] [cursor=pointer]: policy-engine.service.ts
+          - generic [ref=e582] [cursor=pointer]: PolicyEngineService
+          - generic [ref=e586] [cursor=pointer]: evaluate
+          - generic [ref=e590] [cursor=pointer]: recovery-engine.module.ts
+          - generic [ref=e594] [cursor=pointer]: RecoveryEngineModule
+          - generic [ref=e598] [cursor=pointer]: recovery-engine.service.ts
+          - generic [ref=e602] [cursor=pointer]: RecoveryEngineService
+          - generic [ref=e606] [cursor=pointer]: advanceClockAndResolve
+          - generic [ref=e610] [cursor=pointer]: approveCase
+          - generic [ref=e614] [cursor=pointer]: constructor
+          - generic [ref=e618] [cursor=pointer]: diagnoseAndDecide
+          - generic [ref=e622] [cursor=pointer]: executeAction
+          - generic [ref=e626] [cursor=pointer]: getExpectedAmount
+          - generic [ref=e630] [cursor=pointer]: getTotalPaid
+          - generic [ref=e634] [cursor=pointer]: handleClientResponse
+          - generic [ref=e638] [cursor=pointer]: logEvent
+          - generic [ref=e642] [cursor=pointer]: processCase
+          - generic [ref=e646] [cursor=pointer]: recomputeRecoveryStatus
+          - generic [ref=e650] [cursor=pointer]: recordAction
+          - generic [ref=e654] [cursor=pointer]: recovery.types.ts
+          - generic [ref=e658] [cursor=pointer]: Diagnosis
+          - generic [ref=e662] [cursor=pointer]: PolicyDecision
+          - generic [ref=e666] [cursor=pointer]: sim-clock.controller.ts
+          - generic [ref=e670] [cursor=pointer]: SimClockController
+          - generic [ref=e674] [cursor=pointer]: advance
+          - generic [ref=e678] [cursor=pointer]: constructor
+          - generic [ref=e682] [cursor=pointer]: getCurrentDay
+          - generic [ref=e686] [cursor=pointer]: sim-clock.module.ts
+          - generic [ref=e690] [cursor=pointer]: SimClockModule
+          - generic [ref=e694] [cursor=pointer]: sim-clock.service.ts
+          - generic [ref=e698] [cursor=pointer]: SimClockService
+          - generic [ref=e702] [cursor=pointer]: advanceDays
+          - generic [ref=e706] [cursor=pointer]: constructor
+          - generic [ref=e710] [cursor=pointer]: getCurrentDay
+          - generic [ref=e714] [cursor=pointer]: reset
+      - generic [ref=e27]:
+        - generic [ref=e718]: Edges
+        - button "part of 85" [ref=e719] [cursor=pointer]:
+          - text: part of
+          - generic [ref=e721]: "85"
+        - button "uses 109" [ref=e722] [cursor=pointer]:
+          - text: uses
+          - generic [ref=e725]: "109"
+        - button "references 27" [ref=e726] [cursor=pointer]:
+          - text: references
+          - generic [ref=e728]: "27"
+      - generic [ref=e29]: 114 / 114 nodes shown
+      - generic [ref=e30]:
+        - button "file 29" [ref=e729] [cursor=pointer]:
+          - text: file
+          - generic [ref=e731]: "29"
+        - button "function 4" [ref=e732] [cursor=pointer]:
+          - text: function
+          - generic [ref=e734]: "4"
+        - button "class 24" [ref=e735] [cursor=pointer]:
+          - text: class
+          - generic [ref=e737]: "24"
+        - button "method 54" [ref=e738] [cursor=pointer]:
+          - text: method
+          - generic [ref=e740]: "54"
+        - button "type 3" [ref=e741] [cursor=pointer]:
+          - text: type
+          - generic [ref=e743]: "3"
+      - generic [ref=e34]:
+        - button "Zoom in" [ref=e35] [cursor=pointer]: +
+        - button "Zoom out" [ref=e36] [cursor=pointer]: −
+        - button "Reset view" [ref=e37] [cursor=pointer]: ⟲
+    - separator "Resize details panel" [ref=e38]
+    - complementary [ref=e39]:
+      - generic [ref=e744]: Select a node to view details

@@ -32,6 +32,87 @@ export class CasesController {
     });
   }
 
+  // READ-ONLY aggregates, computed on demand from current DB state. No tables,
+  // no cache, no background jobs. Declared BEFORE @Get(':id') so 'metrics'
+  // isn't swallowed by the param route.
+  //
+  // Two complementary rates (distinct denominators, by design):
+  //  - recoveryRate (case-count): RECOVERED / (RECOVERED+ESCALATED+UNRESOLVED) —
+  //    concluded-only denominator, fully-recovered numerator. In-flight cases
+  //    (ACTION_TAKEN/PENDING_APPROVAL/DIAGNOSING/PARTIALLY_RECOVERED) excluded.
+  //  - moneyRecoveryRate (₹): recoveredAmount / expectedAmount over the WHOLE
+  //    book (incl. still-in-flight), i.e. "of all at-risk money seen so far, how
+  //    much actually came back".
+  @Get('metrics')
+  async metrics() {
+    const byStatus = await this.prisma.case.groupBy({
+      by: ['status'],
+      _count: { _all: true },
+    });
+    const totalCases = byStatus.reduce((s, r) => s + r._count._all, 0);
+    const count = (st: string) => byStatus.find((r) => r.status === st)?._count._all ?? 0;
+    const concluded = ['RECOVERED', 'ESCALATED', 'UNRESOLVED'];
+    const recoveredCases = count('RECOVERED');
+    const concludedCount = concluded.reduce((s, st) => s + count(st), 0);
+    const recoveryRate = concludedCount ? recoveredCases / concludedCount : 0;
+
+    // real money recovered — sum of actual Payment rows (incl. partial recoveries).
+    const paid = await this.prisma.payment.aggregate({ _sum: { amount: true } });
+    const recoveredAmount = Number(paid._sum.amount ?? 0);
+
+    // full at-risk book.
+    const inv = await this.prisma.invoice.aggregate({
+      _sum: { invoiceAmount: true },
+    });
+    const att = await this.prisma.paymentAttempt.aggregate({
+      _sum: { originalAmount: true },
+    });
+    const expectedAmount =
+      Number(inv._sum.invoiceAmount ?? 0) + Number(att._sum.originalAmount ?? 0);
+
+    // per-type status counts + per-type recovered ₹ (small scale — JS reduce is fine).
+    const byTypeStatus = await this.prisma.case.groupBy({
+      by: ['type', 'status'],
+      _count: { _all: true },
+    });
+    const pays = await this.prisma.payment.findMany({
+      select: { amount: true, case: { select: { type: true } } },
+    });
+    const byType = {} as Record<
+      string,
+      { totalCases: number; recoveredCases: number; recoveredAmount: number; recoveryRate: number }
+    >;
+    for (const type of ['B2B_RECEIVABLE', 'PAYMENT_FAILURE']) {
+      const rows = byTypeStatus.filter((r) => r.type === type);
+      const tc = rows.reduce((s, r) => s + r._count._all, 0);
+      const rc = rows.find((r) => r.status === 'RECOVERED')?._count._all ?? 0;
+      const cc = concluded.reduce(
+        (s, st) => s + (rows.find((r) => r.status === st)?._count._all ?? 0),
+        0,
+      );
+      const ra = pays
+        .filter((p) => p.case.type === type)
+        .reduce((s, p) => s + Number(p.amount), 0);
+      byType[type] = {
+        totalCases: tc,
+        recoveredCases: rc,
+        recoveredAmount: Number(ra.toFixed(2)),
+        recoveryRate: cc ? rc / cc : 0,
+      };
+    }
+
+    return {
+      totalCases,
+      recoveredCases,
+      recoveredAmount,
+      expectedAmount,
+      moneyRecoveryRate: expectedAmount ? recoveredAmount / expectedAmount : 0,
+      recoveryRate,
+      byStatus: Object.fromEntries(byStatus.map((r) => [r.status, r._count._all])),
+      byType,
+    };
+  }
+
   @Get(':id')
   async getOne(@Param('id') id: string) {
     return this.prisma.case.findUniqueOrThrow({
