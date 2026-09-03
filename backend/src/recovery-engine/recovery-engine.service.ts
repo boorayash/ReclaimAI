@@ -282,7 +282,13 @@ export class RecoveryEngineService {
             promisedBySimDay: payload.promisedBySimDay ?? currentDay + 3,
           },
         });
-        await this.logEvent(caseId, 'PROMISE_LOGGED', payload);
+        // Log the RESOLVED values (not the raw payload) — a caller that
+        // omits promisedAmount/promisedBySimDay relies on the defaults above,
+        // and the raw payload would carry undefined fields into the audit trail.
+        await this.logEvent(caseId, 'PROMISE_LOGGED', {
+          promisedAmount: payload.promisedAmount ?? expected,
+          promisedBySimDay: payload.promisedBySimDay ?? currentDay + 3,
+        });
         // Case stays ACTION_TAKEN — waiting on the sim clock to reach
         // the promised day, at which point advanceClockAndResolve()
         // checks whether it was actually paid.

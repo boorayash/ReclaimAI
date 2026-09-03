@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCases, type Case, type CaseType } from '../lib/api';
-import { formatINR } from '../lib/format';
+import { formatINR, overdueDetail } from '../lib/format';
 import { Table } from '../components/Table';
 import { TypeBadge } from '../components/TypeBadge';
 import { StatusBadge } from '../components/StatusBadge';
@@ -12,15 +12,6 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'B2B_RECEIVABLE', label: 'B2B receivables' },
   { key: 'PAYMENT_FAILURE', label: 'Payment failures' },
 ];
-
-// Positive overdue = past due ("Nd overdue"); non-positive = still within due
-// window (countdown). Domain-correct per plan.
-function overdueDetail(row: Case): string {
-  const inv = row.invoice;
-  if (!inv) return '';
-  const overdue = row.simDay - inv.dueSimDay;
-  return overdue > 0 ? `${overdue}d overdue` : `due in ${-overdue}d`;
-}
 
 export function RecoveryCases() {
   const nav = useNavigate();

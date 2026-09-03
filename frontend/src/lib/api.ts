@@ -125,3 +125,46 @@ export const getMetrics = () => api.get<MetricsResponse>('/cases/metrics');
 export const getMetricsTimeseries = () =>
   api.get<{ series: TimeseriesPoint[] }>('/cases/metrics/timeseries');
 export const getCases = () => api.get<Case[]>('/cases');
+
+export interface RecoveryAction {
+  id: string;
+  actionType: string;
+  status: string;
+  attemptNumber: number;
+  decidedBy: string; // "AI" | "POLICY_ENGINE" | "FALLBACK"
+  reasoning: string | null;
+  createdAt: string;
+}
+
+export interface AuditEvent {
+  id: string;
+  eventType: string;
+  payload: Record<string, any> | null;
+  createdAt: string;
+}
+
+export interface Promise_ {
+  id: string;
+  promisedAmount: number;
+  promisedBySimDay: number;
+  fulfilled: boolean;
+  createdAt: string;
+}
+
+export interface Payment {
+  id: string;
+  amount: number;
+  simDay: number;
+  createdAt: string;
+}
+
+export interface CaseDetail extends Case {
+  recoveryActions: RecoveryAction[];
+  auditEvents: AuditEvent[];
+  promises: Promise_[];
+  payments: Payment[];
+}
+
+export const getCase = (id: string) => api.get<CaseDetail>(`/cases/${id}`);
+export const processCase = (id: string) =>
+  api.post<CaseDetail>(`/cases/${id}/process`, {});
