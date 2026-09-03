@@ -16,7 +16,7 @@ export function AuditLog() {
   const [eventType, setEventType] = useState('');
 
   useEffect(() => {
-    getAuditLog({ page, eventType: eventType || undefined })
+    getAuditLog({ page, ...(eventType ? { eventType } : {}) })
       .then(setData)
       .catch(() => setData(null));
   }, [page, eventType]);
