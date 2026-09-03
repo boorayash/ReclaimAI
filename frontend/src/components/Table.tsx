@@ -14,11 +14,13 @@ export function Table<T>({
   rows,
   rowKey,
   emptyMessage = 'No rows.',
+  onRowClick,
 }: {
   columns: Column<T>[];
   rows: T[];
   rowKey: (row: T) => string;
   emptyMessage?: string;
+  onRowClick?: (row: T) => void;
 }) {
   if (rows.length === 0) {
     return <p className="py-6 text-center text-sm text-slate">{emptyMessage}</p>;
@@ -40,7 +42,11 @@ export function Table<T>({
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={rowKey(row)} className="border-b border-hairline">
+            <tr
+              key={rowKey(row)}
+              onClick={onRowClick ? () => onRowClick(row) : undefined}
+              className={`border-b border-hairline ${onRowClick ? 'cursor-pointer hover:bg-hairline' : ''}`}
+            >
               {columns.map((c) => (
                 <td
                   key={c.key}
