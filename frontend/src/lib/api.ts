@@ -168,3 +168,31 @@ export interface CaseDetail extends Case {
 export const getCase = (id: string) => api.get<CaseDetail>(`/cases/${id}`);
 export const processCase = (id: string) =>
   api.post<CaseDetail>(`/cases/${id}/process`, {});
+
+export interface AuditLogEntry {
+  id: string;
+  caseId: string;
+  caseType: 'B2B_RECEIVABLE' | 'PAYMENT_FAILURE';
+  caseLabel: string;
+  eventType: string;
+  payload: Record<string, any> | null;
+  createdAt: string;
+}
+
+export interface AuditLogResponse {
+  items: AuditLogEntry[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+}
+
+export const approveCase = (id: string) => api.post<CaseDetail>(`/cases/${id}/approve`, {});
+export const getAuditLog = (params?: { page?: number; eventType?: string }) =>
+  api.get<AuditLogResponse>(`/audit-log?${new URLSearchParams(params as any)}`);
+export const getCurrentSimDay = () => api.get<{ currentDay: number }>('/sim/current-day');
+export const advanceSimClock = (days: number) =>
+  api.post<{ fromDay: number; toDay: number; resolvedCount: number; noResponseEscalated: number }>(
+    '/cases/sim/advance-and-resolve',
+    { days },
+  );

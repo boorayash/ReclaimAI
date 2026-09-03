@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCases, type Case, type CaseType } from '../lib/api';
 import { formatINR, overdueDetail } from '../lib/format';
+import { useSimClock } from '../lib/sim-context';
 import { Table } from '../components/Table';
 import { TypeBadge } from '../components/TypeBadge';
 import { StatusBadge } from '../components/StatusBadge';
@@ -15,12 +16,13 @@ const TABS: { key: Tab; label: string }[] = [
 
 export function RecoveryCases() {
   const nav = useNavigate();
+  const { refreshTrigger } = useSimClock();
   const [cases, setCases] = useState<Case[]>([]);
   const [tab, setTab] = useState<Tab>('ALL');
 
   useEffect(() => {
     getCases().then(setCases).catch(() => {});
-  }, []);
+  }, [refreshTrigger]);
 
   const rows = useMemo(
     () => (tab === 'ALL' ? cases : cases.filter((c) => c.type === tab)),

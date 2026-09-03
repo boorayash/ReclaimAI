@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { getCase, processCase, type CaseDetail as CaseDetailType } from '../lib/api';
 import { formatINR, overdueDetail } from '../lib/format';
 import { humanize, EVENT_LABELS, ACTION_LABELS } from '../lib/labels';
+import { latestEvent } from '../lib/decision-trace';
+import { useSimClock } from '../lib/sim-context';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { StatusBadge } from '../components/StatusBadge';
@@ -10,14 +12,6 @@ import { TypeBadge } from '../components/TypeBadge';
 
 // Statuses where re-trigger is disabled
 const TERMINAL = ['RECOVERED', 'PARTIALLY_RECOVERED', 'UNRESOLVED', 'ESCALATED'];
-
-// Find the most recent audit event of a given type
-function latestEvent(events: CaseDetailType['auditEvents'], type: string) {
-  for (let i = events.length - 1; i >= 0; i--) {
-    if (events[i].eventType === type) return events[i];
-  }
-  return null;
-}
 
 // Plain-language summary for each Decision Trace stage
 function diagnosisSummary(evt: ReturnType<typeof latestEvent>) {
@@ -144,6 +138,7 @@ function TraceStage({
 
 export function CaseDetail() {
   const { id } = useParams();
+  const { refreshTrigger } = useSimClock();
   const [data, setData] = useState<CaseDetailType | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -159,7 +154,7 @@ export function CaseDetail() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(load, [id]);
+  useEffect(() => { load(); }, [id, refreshTrigger]);
 
   const handleProcess = () => {
     if (!id) return;

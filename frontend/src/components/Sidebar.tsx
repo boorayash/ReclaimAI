@@ -33,15 +33,16 @@ const ICONS: Record<string, string> = {
   logo: 'M12 2l8 10-8 10-8-10z',
 };
 
-const NAV = [
-  { to: '/overview', label: 'Overview', icon: 'overview', end: true },
-  { to: '/cases', label: 'Recovery Cases', icon: 'cases', end: false },
-  { to: '/approvals', label: 'Approvals', icon: 'approvals', end: false },
-  { to: '/audit-log', label: 'Audit Log', icon: 'audit-log', end: false },
-];
-
 export function Sidebar() {
   const { user, logout } = useAuth();
+  const NAV = [
+    { to: '/overview', label: 'Overview', icon: 'overview', end: true },
+    { to: '/cases', label: 'Recovery Cases', icon: 'cases', end: false },
+    ...(user?.role === 'ADMIN'
+      ? [{ to: '/approvals', label: 'Approvals', icon: 'approvals', end: false }]
+      : []),
+    { to: '/audit-log', label: 'Audit Log', icon: 'audit-log', end: false },
+  ];
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     try {
       return localStorage.getItem(COLLAPSE_KEY) === '1';

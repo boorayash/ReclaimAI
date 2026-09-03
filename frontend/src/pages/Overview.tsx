@@ -18,6 +18,7 @@ import {
   type Case,
 } from '../lib/api';
 import { formatINR, formatPercent } from '../lib/format';
+import { useSimClock } from '../lib/sim-context';
 import { Card } from '../components/Card';
 import { Table } from '../components/Table';
 import { StatusBadge } from '../components/StatusBadge';
@@ -28,6 +29,7 @@ const ACTIVE_STATUSES = ['DETECTED', 'DIAGNOSING', 'ACTION_TAKEN', 'PENDING_APPR
 const CHART_HEIGHT = 288;
 
 export function Overview() {
+  const { refreshTrigger } = useSimClock();
   const [metrics, setMetrics] = useState<MetricsResponse | null>(null);
   const [series, setSeries] = useState<TimeseriesPoint[]>([]);
   const [cases, setCases] = useState<Case[]>([]);
@@ -36,7 +38,7 @@ export function Overview() {
     getMetrics().then(setMetrics).catch(() => {});
     getMetricsTimeseries().then((r) => setSeries(r.series)).catch(() => {});
     getCases().then(setCases).catch(() => {});
-  }, []);
+  }, [refreshTrigger]);
 
   const activeCases = ACTIVE_STATUSES.reduce(
     (sum, s) => sum + (metrics?.byStatus[s] ?? 0),
