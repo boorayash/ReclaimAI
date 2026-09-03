@@ -1,0 +1,17 @@
+/* "Clearing" design tokens — locked. Do not deviate.
+   Mirrored in tailwind.config.js theme extension. */
+
+:root {
+  --color-paper: #F7F8F6;
+  --color-surface: #FFFFFF;
+  --color-ink: #14171F;
+  --color-slate: #5B6270;
+  --color-hairline: #E4E6E1;
+  --color-accent: #1F6F5C;
+  --color-accent-muted: #E3EDE9;
+  --color-danger: #A23B3B;
+  --color-danger-muted: #F5E8E6;
+  --color-warning: #B8862E;
+  --color-warning-muted: #F7EFDF;
+  --color-neutral: #8B93A8;
+}

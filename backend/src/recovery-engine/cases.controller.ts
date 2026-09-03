@@ -113,6 +113,30 @@ export class CasesController {
     };
   }
 
+  // Time-series cumulative recovery (₹). Declared BEFORE @Get(':id').
+  @Get('metrics/timeseries')
+  async metricsTimeseries() {
+    const payments = await this.prisma.payment.findMany({
+      select: { amount: true, simDay: true },
+      orderBy: { simDay: 'asc' },
+    });
+
+    const byDay = new Map<number, number>();
+    for (const p of payments) {
+      byDay.set(p.simDay, (byDay.get(p.simDay) ?? 0) + Number(p.amount));
+    }
+
+    let cumulative = 0;
+    const series = Array.from(byDay.entries())
+      .sort(([a], [b]) => a - b)
+      .map(([simDay, amount]) => {
+        cumulative += amount;
+        return { simDay, cumulativeRecovered: cumulative };
+      });
+
+    return { series };
+  }
+
   @Get(':id')
   async getOne(@Param('id') id: string) {
     return this.prisma.case.findUniqueOrThrow({

@@ -20,3 +20,4 @@ GEMINI.md
 CLAUDE.md
 .ignore
 .mcp.json
+.playwright-mcp/

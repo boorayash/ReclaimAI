@@ -1,0 +1,26 @@
+@import './styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-paper text-ink antialiased;
+  }
+
+  /* money / KPI figures stay aligned */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* visible but restrained keyboard focus, no browser-blue ring */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
