@@ -1,4 +1,4 @@
-// Revenue Recovery Agent — Prisma schema
+// ReclaimAI — Prisma schema
 // Shared core: Case, RecoveryAction, AuditEvent, Promise, Payment
 // Domain-specific: Invoice (B2B), PaymentAttempt (consumer payment failure)
 

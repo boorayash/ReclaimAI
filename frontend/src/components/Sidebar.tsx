@@ -79,7 +79,7 @@ export function Sidebar() {
           <Icon d={ICONS.logo} size={16} />
         </span>
         {!collapsed && (
-          <span className="truncate text-sm font-semibold text-ink">Revenue Recovery</span>
+          <span className="truncate text-sm font-semibold text-ink">ReclaimAI</span>
         )}
       </div>
 

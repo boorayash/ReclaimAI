@@ -31,7 +31,7 @@ export function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-paper p-6">
       <div className="w-full max-w-sm border border-hairline bg-surface p-8">
-        <h1 className="font-serif text-2xl font-semibold text-ink">Revenue recovery</h1>
+        <h1 className="font-serif text-2xl font-semibold text-ink">ReclaimAI</h1>
         <p className="mt-1 text-sm text-slate">Sign in to the control room.</p>
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <div>

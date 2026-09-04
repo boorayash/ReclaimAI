@@ -1,4 +1,4 @@
-# Revenue Recovery Agent
+# ReclaimAI — Autonomous Revenue Recovery Agent
 
 An autonomous, bounded revenue-recovery system. It detects revenue at risk — overdue B2B invoices and failed consumer payments — diagnoses the cause, decides on the right intervention, executes it within policy limits, and verifies whether the money actually came back. Every decision is logged to a full audit trail.
 
