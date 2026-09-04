@@ -65,7 +65,7 @@ export class BatchService {
   }
 
   private async createTemplate(name: TemplateName, i: number): Promise<string> {
-    const day = this.simClock.getCurrentDay();
+    const day = await this.simClock.getCurrentDay();
     switch (name) {
       case 'quick_recovery': {
         const amount = 5000 * (i + 1);

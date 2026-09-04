@@ -16,7 +16,7 @@ const TABS: { key: Tab; label: string }[] = [
 
 export function RecoveryCases() {
   const nav = useNavigate();
-  const { refreshTrigger } = useSimClock();
+  const { refreshTrigger, currentDay } = useSimClock();
   const [cases, setCases] = useState<Case[]>([]);
   const [tab, setTab] = useState<Tab>('ALL');
 
@@ -53,7 +53,7 @@ export function RecoveryCases() {
       header: 'Detail',
       render: (row: Case) =>
         row.type === 'B2B_RECEIVABLE' ? (
-          overdueDetail(row)
+          overdueDetail(row, currentDay)
         ) : (
           <span>
             {row.paymentAttempt?.failureReason ?? ''}

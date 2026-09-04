@@ -138,7 +138,7 @@ function TraceStage({
 
 export function CaseDetail() {
   const { id } = useParams();
-  const { refreshTrigger } = useSimClock();
+  const { refreshTrigger, currentDay } = useSimClock();
   const [data, setData] = useState<CaseDetailType | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -224,7 +224,7 @@ export function CaseDetail() {
         </p>
         <p className="mt-1 text-sm text-slate">
           {data.type === 'B2B_RECEIVABLE'
-            ? overdueDetail(data)
+            ? overdueDetail(data, currentDay)
             : `${data.paymentAttempt?.failureReason ?? ''} · ${data.paymentAttempt?.retryCount ?? 0}/${data.paymentAttempt?.maxRetries ?? 3} retries`}
         </p>
       </div>

@@ -93,7 +93,7 @@ export class RecoveryEngineService {
             customerName: kase.invoice?.customerName,
             invoiceAmount: kase.invoice?.invoiceAmount,
             dueSimDay: kase.invoice?.dueSimDay,
-            currentSimDay: kase.simDay,
+            currentSimDay: await this.simClock.getCurrentDay(),
           }
         : {
             originalAmount: kase.paymentAttempt?.originalAmount,
@@ -186,7 +186,7 @@ export class RecoveryEngineService {
       if (att.succeedsOnRetryAt != null && newCount >= att.succeedsOnRetryAt) {
         const expected = await this.getExpectedAmount(caseId);
         await this.prisma.payment.create({
-          data: { caseId, amount: expected, simDay: this.simClock.getCurrentDay() },
+          data: { caseId, amount: expected, simDay: await this.simClock.getCurrentDay() },
         });
         await this.recomputeRecoveryStatus(caseId); // -> RECOVERED
         await this.logEvent(caseId, 'RETRY_RECOVERED', {
@@ -257,7 +257,7 @@ export class RecoveryEngineService {
     responseType: 'PROMISE_TO_PAY' | 'DISPUTE' | 'PARTIAL_PAYMENT' | 'ALREADY_PAID',
     payload: { promisedAmount?: number; promisedBySimDay?: number; partialAmount?: number },
   ) {
-    const currentDay = this.simClock.getCurrentDay();
+    const currentDay = await this.simClock.getCurrentDay();
 
     await this.prisma.clientResponse.create({
       data: { caseId, responseType, simDay: currentDay, payload: payload ?? undefined },

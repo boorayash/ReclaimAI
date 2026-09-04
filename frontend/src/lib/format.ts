@@ -16,9 +16,10 @@ export function formatPercent(rate: number): string {
 
 // Positive overdue = past due ("Nd overdue"); non-positive = countdown.
 // Shared by RecoveryCases and CaseDetail.
-export function overdueDetail(row: Case): string {
+// Takes live currentDay — never reads per-case simDay snapshot.
+export function overdueDetail(row: Case, currentDay: number): string {
   const inv = row.invoice;
   if (!inv) return '';
-  const overdue = row.simDay - inv.dueSimDay;
+  const overdue = currentDay - inv.dueSimDay;
   return overdue > 0 ? `${overdue}d overdue` : `due in ${-overdue}d`;
 }

@@ -8,8 +8,8 @@ export class SimClockController {
   constructor(private simClock: SimClockService) {}
 
   @Get('current-day')
-  getCurrentDay() {
-    return { currentDay: this.simClock.getCurrentDay() };
+  async getCurrentDay() {
+    return { currentDay: await this.simClock.getCurrentDay() };
   }
 
   // Dashboard "+N days" button hits this. Returns which promises came

@@ -1,21 +1,22 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-// A single in-memory "current day" for the whole demo (not per-case —
-// one shared timeline, like a fast-forward button on the dashboard).
-// Advancing the clock checks every open Promise to see if its due day
-// has passed, and flags broken promises for re-diagnosis. This is what
-// makes "client promised payment in 2 days" demoable without waiting
-// 2 real days.
+// A single shared "current day" for the whole demo — persisted to DB
+// so it survives server restarts (Render free-tier spin-down, local
+// dev restarts, etc.). Singleton row (id: 1).
 @Injectable()
 export class SimClockService {
   private readonly logger = new Logger(SimClockService.name);
-  private currentDay = 0;
 
   constructor(private prisma: PrismaService) {}
 
-  getCurrentDay(): number {
-    return this.currentDay;
+  async getCurrentDay(): Promise<number> {
+    const clock = await this.prisma.simClock.upsert({
+      where: { id: 1 },
+      update: {},
+      create: { id: 1, currentDay: 0 },
+    });
+    return clock.currentDay;
   }
 
   /**
@@ -25,13 +26,20 @@ export class SimClockService {
    * back to DIAGNOSING with an escalated tone.
    */
   async advanceDays(days: number) {
-    const fromDay = this.currentDay;
-    this.currentDay += days;
-    this.logger.log(`Sim clock advanced: day ${fromDay} -> ${this.currentDay}`);
+    const fromDay = await this.getCurrentDay();
+    const toDay = fromDay + days;
+
+    await this.prisma.simClock.upsert({
+      where: { id: 1 },
+      update: { currentDay: toDay },
+      create: { id: 1, currentDay: toDay },
+    });
+
+    this.logger.log(`Sim clock advanced: day ${fromDay} -> ${toDay}`);
 
     const duePromises = await this.prisma.promise.findMany({
       where: {
-        promisedBySimDay: { lte: this.currentDay },
+        promisedBySimDay: { lte: toDay },
         fulfilled: false,
       },
       include: { case: true },
@@ -39,12 +47,8 @@ export class SimClockService {
 
     return {
       fromDay,
-      toDay: this.currentDay,
-      duePromises, // recovery-engine.service.ts processes each of these
+      toDay,
+      duePromises,
     };
-  }
-
-  reset() {
-    this.currentDay = 0;
   }
 }
