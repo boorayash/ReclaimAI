@@ -132,7 +132,7 @@ export function Overview() {
                     background: 'var(--color-surface)',
                   }}
                   labelStyle={{ color: 'var(--color-slate)' }}
-                  formatter={(value: number | string) => [formatINR(Number(value)), 'Recovered']}
+                  formatter={(value: any) => [formatINR(Number(value ?? 0)), 'Recovered']}
                   labelFormatter={(label) => `Sim day ${label}`}
                   cursor={{ stroke: 'var(--color-hairline)' }}
                 />

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCases, type Case, type CaseType } from '../lib/api';
 import { formatINR, overdueDetail } from '../lib/format';
 import { useSimClock } from '../lib/sim-context';
-import { Table } from '../components/Table';
+import { Table, type Column } from '../components/Table';
 import { TypeBadge } from '../components/TypeBadge';
 import { StatusBadge } from '../components/StatusBadge';
 
@@ -29,7 +29,7 @@ export function RecoveryCases() {
     [cases, tab],
   );
 
-  const columns = [
+  const columns: Column<Case>[] = [
     {
       key: 'entity',
       header: 'Case',
